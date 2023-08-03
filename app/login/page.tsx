@@ -1,9 +1,9 @@
 "use client";
+import AuthForm from "@/src/components/auth/Form";
 import { theme, Button, Checkbox, Col, Form, Input, Row } from "antd";
 
 import Image from "next/image";
 import Link from "next/link";
-
 
 type FieldType = {
   username?: string;
@@ -33,38 +33,7 @@ export default function Login() {
                 Sign in by entering to the administrator{" "}
               </p>
 
-              <Form<FieldType>
-                style={{ marginTop: "4rem" }}
-                form={form}
-                layout="vertical"
-                requiredMark={false}
-                onFinish={(values) => {
-                  console.log(values);
-                }}
-              >
-                <Form.Item<FieldType>
-                  name="username"
-                  rules={[
-                    { required: true, message: "Please enter a email address",type:'email' },
-                  ]}
-                >
-                  <Input placeholder="Email" />
-                </Form.Item>
-
-                <Form.Item<FieldType>
-                  name="password"
-                  rules={[
-                    { required: true, message: "Please input your password!" },
-                  ]}
-                >
-                  <Input.Password placeholder="Password" />
-                </Form.Item>
-                <Form.Item style={{ marginTop: "32px" }}>
-                  <Button className="w-full" type="primary" htmlType="submit">
-                    Sign In
-                  </Button>
-                </Form.Item>
-              </Form>
+              <AuthForm />
               <div>
                 <p className="text-gray-500 text-sm">
                   Don't have an account?{" "}
