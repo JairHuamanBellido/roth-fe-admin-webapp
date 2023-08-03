@@ -6,10 +6,12 @@ import { useMutation } from "@tanstack/react-query";
 import { Button, Form, Input } from "antd";
 import { AxiosError } from "axios";
 import ErrorRegister from "../shared/ErrorForm";
+import Cookie from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function AuthForm() {
   const [form] = Form.useForm();
-
+  const { push } = useRouter();
   const { mutate, isLoading, isSuccess, isError, error } = useMutation<
     HttpRestApiAuthenticationResponse,
     AxiosError<IHttpError>,
@@ -28,7 +30,14 @@ export default function AuthForm() {
         layout="vertical"
         requiredMark={false}
         onFinish={(values) => {
-          mutate(values);
+          mutate(values, {
+            onSuccess(data) {
+              Cookie.set("IdToken", data.IdToken, { secure: true });
+              Cookie.set("AccessToken", data.AccessToken, { secure: true });
+              Cookie.set("RefreshToken", data.RefreshToken, { secure: true });
+              push("/dashboard");
+            },
+          });
         }}
       >
         <Form.Item<IAuthenticationAdministrator>
@@ -55,7 +64,7 @@ export default function AuthForm() {
         )}
         <Form.Item style={{ marginTop: "32px" }}>
           <Button
-            loading={isLoading}
+            loading={isLoading || isSuccess}
             className="w-full"
             type="primary"
             htmlType="submit"
