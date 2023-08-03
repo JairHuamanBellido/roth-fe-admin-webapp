@@ -1,10 +1,10 @@
 import { ICreateAdministrator } from "@/src/domain/interface/ICreateAdministrator";
-import { HttoRestApiAdministrator } from "@/src/infrastructure/administrator/HttoRestApiAdministrator";
+import { HttpRestApiAdministrator } from "@/src/infrastructure/administrator/HttpRestApiAdministrator";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Form, Input } from "antd";
 import SuccessfullyRegister from "./SuccessRegister";
 import Link from "next/link";
-import ErrorRegister from "./ErrorRegister";
+import ErrorForm from "../shared/ErrorForm";
 import { IHttpError } from "@/src/core/error/IHttpError";
 import { AxiosError } from "axios";
 
@@ -18,7 +18,7 @@ export default function RegisterForm() {
   >(
     ["register"],
     async (payload: ICreateAdministrator) =>
-      await HttoRestApiAdministrator.create(payload)
+      await HttpRestApiAdministrator.create(payload)
   );
 
   if (isSuccess) {
@@ -69,9 +69,7 @@ export default function RegisterForm() {
         >
           <Input.Password placeholder="Password" />
         </Form.Item>
-        {isError && (
-          <ErrorRegister message={error.response?.data.message ?? ""} />
-        )}
+        {isError && <ErrorForm message={error.response?.data.message ?? ""} />}
         <Form.Item style={{ marginTop: "32px" }}>
           <Button
             loading={isLoading}
